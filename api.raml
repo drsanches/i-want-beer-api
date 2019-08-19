@@ -1,0 +1,237 @@
+#%RAML 1.0
+title: I WANT BEER
+version: 1.0
+baseUri: https://i-want-beer-api.herokuapp.com/
+description: This is the API for the I WANT BEER application.
+
+types:
+  Token:
+    type: string
+    description: Authorization token.
+  Username:
+    type: string
+    description: Unique string displayed to other users.
+  Firstname: string
+  Lastname: string
+  Email:
+    type: string
+    description: Email tied to user account.
+  Photo:
+    description: User profile photo URLs.
+    properties:
+      big: string
+      small: string
+  Status:
+    type: string
+    enum: [NONE, WANT BEER, DRINK BEER, DRUNK]
+    description: User status.
+  Location:
+    # TODO: think about string format
+    type: string
+    description: |
+      Geographic coordinates of the user, or "null" if not available.
+    example: 59.882196, 29.830542
+  MyProfile:
+    type: object
+    description: Authorized user information.
+    properties:
+      username: Username
+      firstname: Firstname
+      lastname: Lastname
+      email: Email
+      status: Status
+      photo: Photo
+  FriendProfile:
+    type: object
+    description: Friend user information.
+    properties:
+      username: Username
+      firstname: Firstname
+      lastname: Lastname
+      status: Status
+      photo: Photo
+      location: Location
+  OtherProfile:
+    type: object
+    description: Unknown user information.
+    properties:
+      username: Username
+      firstname: Firstname
+      lastname: Lastname
+      photo: Photo
+
+/rest-auth:
+  /registration:
+    post:
+      description: Register a new user in the system.
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            username: Username
+            password1: string
+            password2: string
+            email: Email
+      responses:
+        200:
+          description: Returns authorization token
+          body:
+            application/json:
+              type: object
+              properties:
+                key: Token
+  /login:
+    put:
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            username: Username
+            password: string
+      responses:
+        200:
+          description: Returns authorization token
+          body:
+            application/json:
+              type: object
+              properties:
+                key: Token
+  /password/change:
+    put:
+      headers:
+        Authorization: Token
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            new_password1: string
+            new_password2: string
+            old_password: string
+      responses:
+        200:
+  /logout:
+    put:
+      headers:
+        Authorization: Token
+      responses:
+        200:
+  /delete-account:
+    delete:
+      headers:
+        Authorization: Token
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            password: string
+      responses:
+        200:
+
+/user:
+  get:
+    headers:
+      Authorization: Token
+    responses:
+      200:
+        body:
+          application/json:
+            type: MyProfile
+  patch:
+    headers:
+      Authorization: Token
+    body:
+      multipart/form-data:
+        properties:
+          username?: Username
+          mail?: Email
+          photo?:
+            type: file
+            description: New user profile photo.
+    responses:
+      200:
+  /{friendUsername}:
+    get:
+      headers:
+        Authorization: Token
+      responses:
+        200:
+          body:
+            application/json:
+              type: FriendProfile
+    delete:
+      description: Removes friend with username = friendUsername.
+      headers:
+        Authorization: Token
+      responses:
+        200:
+  /{otherUsername}:
+    get:
+      headers:
+        Authorization: Token
+      responses:
+        200:
+          body:
+            application/json:
+              type: OtherProfile
+    post:
+      description: Sends or acсepts new friend request to a user with username = otherUsername.
+      headers:
+        Authorization: Token
+      responses:
+        200:
+    delete:
+      description: Declines friend request for a user with username = otherUsername.
+      headers:
+        Authorization: Token
+      responses:
+        200:
+
+/i-want-beer:
+  post:
+    headers:
+      Authorization: Token
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          location: Location
+    responses:
+      200:
+
+/friends:
+  get:
+    headers:
+      Authorization: Token
+    responses:
+      200:
+        body:
+          application/json:
+            type: FriendProfile[]
+  /map:
+    get:
+      headers:
+        Authorization: Token
+      responses:
+        200:
+          body:
+            application/json:
+              type: FriendProfile[]
+  /find:
+    get:
+      headers:
+        Authorization: Token
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            search:
+              type: string
+              description: Search string.
+      responses:
+        200:
+          body:
+            application/json:
+              type: OtherProfile[]
+  /requests:
+    get:
+      headers:
+        Authorization: Token
+      responses:
+        200:
+          body:
+            application/json:
+              type: OtherProfile[]
