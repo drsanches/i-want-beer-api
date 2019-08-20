@@ -2,7 +2,8 @@
 title: I WANT BEER
 version: 1.0
 baseUri: https://i-want-beer-api.herokuapp.com/
-description: This is the API for the I WANT BEER application.
+description: |
+  This is the API for the I WANT BEER application.
 
 types:
   Token:
@@ -63,7 +64,7 @@ types:
 /rest-auth:
   /registration:
     post:
-      description: Register a new user in the system.
+      description: Register a new user in the system and authorizes him.
       body:
         application/x-www-form-urlencoded:
           properties:
@@ -73,7 +74,6 @@ types:
             email: Email
       responses:
         200:
-          description: Returns authorization token
           body:
             application/json:
               type: object
@@ -81,6 +81,7 @@ types:
                 key: Token
   /login:
     put:
+      description: Authorizes the user.
       body:
         application/x-www-form-urlencoded:
           properties:
@@ -88,7 +89,6 @@ types:
             password: string
       responses:
         200:
-          description: Returns authorization token
           body:
             application/json:
               type: object
@@ -96,6 +96,7 @@ types:
                 key: Token
   /password/change:
     put:
+      description: Changes user password.
       headers:
         Authorization: Token
       body:
@@ -108,12 +109,14 @@ types:
         200:
   /logout:
     put:
+      description: Logs out the user.
       headers:
         Authorization: Token
       responses:
         200:
   /delete-account:
     delete:
+      description: Deletes the user account.
       headers:
         Authorization: Token
       body:
@@ -125,6 +128,7 @@ types:
 
 /user:
   get:
+    description: Returns authorized user profile information.
     headers:
       Authorization: Token
     responses:
@@ -133,6 +137,7 @@ types:
           application/json:
             type: MyProfile
   patch:
+    description: Changes the profile information of the authorized user.
     headers:
       Authorization: Token
     body:
@@ -145,8 +150,9 @@ types:
             description: New user profile photo.
     responses:
       200:
-  /{friendUsername}:
+  /{friend-username}:
     get:
+      description: Returns a user profile information for friend with username = friend-username.
       headers:
         Authorization: Token
       responses:
@@ -155,13 +161,14 @@ types:
             application/json:
               type: FriendProfile
     delete:
-      description: Removes friend with username = friendUsername.
+      description: Removes friend with username = friend-username from friend list.
       headers:
         Authorization: Token
       responses:
         200:
-  /{otherUsername}:
+  /{other-username}:
     get:
+      description: Returns a user profile information for unknown user with username = other-username.
       headers:
         Authorization: Token
       responses:
@@ -170,13 +177,13 @@ types:
             application/json:
               type: OtherProfile
     post:
-      description: Sends or acсepts new friend request to a user with username = otherUsername.
+      description: Sends or acсepts new friend request to a user with username = other-username.
       headers:
         Authorization: Token
       responses:
         200:
     delete:
-      description: Declines friend request for a user with username = otherUsername.
+        description: Declines friend request from / to a user with username = other-username.
       headers:
         Authorization: Token
       responses:
@@ -184,6 +191,7 @@ types:
 
 /i-want-beer:
   post:
+    description: Changes authorized user status.
     headers:
       Authorization: Token
     body:
@@ -195,6 +203,7 @@ types:
 
 /friends:
   get:
+    description: Returns a list of friend profile information.
     headers:
       Authorization: Token
     responses:
@@ -204,6 +213,7 @@ types:
             type: FriendProfile[]
   /map:
     get:
+      description: Returns a list of friend profile information displayed on a map.
       headers:
         Authorization: Token
       responses:
@@ -213,6 +223,7 @@ types:
               type: FriendProfile[]
   /find:
     get:
+      description: Searches for users matching the search query.
       headers:
         Authorization: Token
       body:
@@ -220,7 +231,7 @@ types:
           properties:
             search:
               type: string
-              description: Search string.
+              description: Search query.
       responses:
         200:
           body:
@@ -228,6 +239,7 @@ types:
               type: OtherProfile[]
   /requests:
     get:
+      description: Returns a list of profile information of users who sent a friend request to the authorized user.
       headers:
         Authorization: Token
       responses:
