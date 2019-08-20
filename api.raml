@@ -64,14 +64,13 @@ types:
 /rest-auth:
   /registration:
     post:
-      description: Register a new user in the system and authorizes him.
+      description: \[NOT IMPLEMENTED\] Register a new user in the system and authorizes him.
       body:
         application/x-www-form-urlencoded:
           properties:
             username: Username
             password1: string
             password2: string
-            email: Email
       responses:
         200:
           body:
@@ -81,7 +80,7 @@ types:
                 key: Token
   /login:
     put:
-      description: Authorizes the user.
+      description: \[NOT IMPLEMENTED\] Authorizes the user.
       body:
         application/x-www-form-urlencoded:
           properties:
@@ -96,7 +95,7 @@ types:
                 key: Token
   /password/change:
     put:
-      description: Changes user password.
+      description: \[NOT IMPLEMENTED\] Changes user password.
       headers:
         Authorization: Token
       body:
@@ -109,14 +108,14 @@ types:
         200:
   /logout:
     put:
-      description: Logs out the user.
+      description: \[NOT IMPLEMENTED\] Logs out the user.
       headers:
         Authorization: Token
       responses:
         200:
   /delete-account:
     delete:
-      description: Deletes the user account.
+      description: \[NOT IMPLEMENTED\] Deletes the user account.
       headers:
         Authorization: Token
       body:
@@ -128,7 +127,7 @@ types:
 
 /user:
   get:
-    description: Returns authorized user profile information.
+    description: \[NOT IMPLEMENTED\] Returns authorized user profile information.
     headers:
       Authorization: Token
     responses:
@@ -137,14 +136,14 @@ types:
           application/json:
             type: MyProfile
   patch:
-    description: Changes the profile information of the authorized user.
+    description: \[NOT IMPLEMENTED\] Changes the profile information of the authorized user.
     headers:
       Authorization: Token
     body:
       multipart/form-data:
         properties:
           username?: Username
-          mail?: Email
+          email?: Email
           photo?:
             type: file
             description: New user profile photo.
@@ -152,7 +151,7 @@ types:
       200:
   /{friend-username}:
     get:
-      description: Returns a user profile information for friend with username = friend-username.
+      description: \[NOT IMPLEMENTED\] Returns a user profile information for friend with username = friend-username.
       headers:
         Authorization: Token
       responses:
@@ -161,14 +160,14 @@ types:
             application/json:
               type: FriendProfile
     delete:
-      description: Removes friend with username = friend-username from friend list.
+      description: \[NOT IMPLEMENTED\] Removes friend with username = friend-username from friend list.
       headers:
         Authorization: Token
       responses:
         200:
   /{other-username}:
     get:
-      description: Returns a user profile information for unknown user with username = other-username.
+      description: \[NOT IMPLEMENTED\] Returns a user profile information for unknown user with username = other-username.
       headers:
         Authorization: Token
       responses:
@@ -177,13 +176,13 @@ types:
             application/json:
               type: OtherProfile
     post:
-      description: Sends or acсepts new friend request to a user with username = other-username.
+      description: \[NOT IMPLEMENTED\] Sends or acсepts new friend request to a user with username = other-username.
       headers:
         Authorization: Token
       responses:
         200:
     delete:
-        description: Declines friend request from / to a user with username = other-username.
+        description: \[NOT IMPLEMENTED\] Declines friend request from / to a user with username = other-username.
       headers:
         Authorization: Token
       responses:
@@ -191,7 +190,7 @@ types:
 
 /i-want-beer:
   post:
-    description: Changes authorized user status.
+    description: \[NOT IMPLEMENTED\] Changes authorized user status.
     headers:
       Authorization: Token
     body:
@@ -203,7 +202,7 @@ types:
 
 /friends:
   get:
-    description: Returns a list of friend profile information.
+    description: \[NOT IMPLEMENTED\] Returns a list of friend profile information.
     headers:
       Authorization: Token
     responses:
@@ -213,7 +212,7 @@ types:
             type: FriendProfile[]
   /map:
     get:
-      description: Returns a list of friend profile information displayed on a map.
+      description: \[NOT IMPLEMENTED\] Returns a list of friend profile information displayed on a map.
       headers:
         Authorization: Token
       responses:
@@ -223,7 +222,7 @@ types:
               type: FriendProfile[]
   /find:
     get:
-      description: Searches for users matching the search query.
+      description: \[NOT IMPLEMENTED\] Searches for users matching the search query.
       headers:
         Authorization: Token
       body:
@@ -239,7 +238,7 @@ types:
               type: OtherProfile[]
   /requests:
     get:
-      description: Returns a list of profile information of users who sent a friend request to the authorized user.
+      description: \[NOT IMPLEMENTED\] Returns a list of profile information of users who sent a friend request to the authorized user.
       headers:
         Authorization: Token
       responses:
