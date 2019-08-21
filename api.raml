@@ -178,14 +178,27 @@ types:
                   detail: "Invalid token."
                 No token:
                   detail: "Authentication credentials were not provided."
-
   /logout:
-    put:
+    post:
       description: \[NOT IMPLEMENTED\] Logs out the user.
       headers:
         Authorization: Token
       responses:
         200:
+          body:
+            application/json:
+              type: object
+              example:
+                detail: "Successfully logged out"
+        401:
+          body:
+            application/json:
+              type: object
+              examples:
+                Invalid token:
+                  detail: "Invalid token."
+                No token:
+                  detail: "Authentication credentials were not provided."
   /delete-account:
     delete:
       description: \[NOT IMPLEMENTED\] Deletes the user account.
