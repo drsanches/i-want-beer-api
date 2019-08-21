@@ -6,9 +6,12 @@ description: |
   This is the API for the I WANT BEER application.
 
 types:
+  Key:
+    type: string
+    description: Authorization key.
   Token:
     type: string
-    description: Authorization token.
+    description: Authorization token - string "Token {key}".
   Username:
     type: string
     description: Unique string displayed to other users.
@@ -82,7 +85,7 @@ types:
             application/json:
               type: object
               properties:
-                key: Token
+                key: Key
         400:
           description: If some input data is incorrect.
           body:
@@ -102,7 +105,7 @@ types:
                 Existent username:
                   username: ["A user with that username already exists."]
   /login:
-    put:
+    post:
       description: \[NOT IMPLEMENTED\] Authorizes the user.
       body:
         application/x-www-form-urlencoded:
@@ -115,7 +118,7 @@ types:
             application/json:
               type: object
               properties:
-                key: Token
+                key: Key
         400:
           description: If some input data is incorrect.
           body:
@@ -123,15 +126,15 @@ types:
               type: object
               examples:
                 No username:
-                  non_field_errors: ['Must include "username" and "password".']
+                  non_field_errors: ["Must include \"username\" and \"password\"."]
                 No password:
-                  password: ['This field is required.']
+                  password: ["This field is required."]
                 Wrong password:
-                  non_field_errors: ['Unable to log in with provided credentials.']
+                  non_field_errors: ["Unable to log in with provided credentials."]
                 Nonexistent username:
-                  non_field_errors: ['Unable to log in with provided credentials.']
+                  non_field_errors: ["Unable to log in with provided credentials."]
   /password/change:
-    put:
+    post:
       description: \[NOT IMPLEMENTED\] Changes user password.
       headers:
         Authorization: Token
@@ -143,6 +146,39 @@ types:
             old_password: string
       responses:
         200:
+          body:
+            application/json:
+              type: object
+              example:
+                detail: "New password has been saved."
+        400:
+          description: If some input data is incorrect.
+          body:
+            application/json:
+              type: object
+              examples:
+                No old_password:
+                  old_password: ["This field is required."]
+                No new_password1:
+                  new_password1: ["This field is required."]
+                No new_password2:
+                  new_password2: ["This field is required."]
+                Different new passwords:
+                  new_password2: ["The two password fields didn't match."]
+                Invalid password:
+                  new_password2: ["This password is too short. It must contain at least 8 characters.", "This password is too common.", "This password is entirely numeric."]
+                Similar username and password:
+                  new_password2: ["The password is too similar to the username."]
+        401:
+          body:
+            application/json:
+              type: object
+              examples:
+                Invalid token:
+                  detail: "Invalid token."
+                No token:
+                  detail: "Authentication credentials were not provided."
+
   /logout:
     put:
       description: \[NOT IMPLEMENTED\] Logs out the user.
