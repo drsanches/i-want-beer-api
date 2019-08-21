@@ -78,6 +78,22 @@ types:
               type: object
               properties:
                 key: Token
+        400:
+          description: If some input data is incorrect.
+          body:
+            application/json:
+              type: object
+              examples:
+                No username:
+                  username: ["This field is required."]
+                No password1:
+                  password1: ["This field is required."]
+                No password2:
+                  password2: ["This field is required."]
+                Different passwords:
+                  non_field_errors: ["The two password fields didn't match."]
+                Invalid password:
+                  password1: ["This password is too short. It must contain at least 8 characters.", "This password is too common.", "This password is entirely numeric."]
   /login:
     put:
       description: \[NOT IMPLEMENTED\] Authorizes the user.
