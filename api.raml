@@ -28,10 +28,16 @@ types:
     description: User status.
   Location:
     # TODO: think about string format
-    type: string
+    type: object
     description: |
-      Geographic coordinates of the user, or "null" if not available.
-    example: 59.882196, 29.830542
+      Geographic coordinates of the user, or null if not available.
+    properties:
+      lat:
+        type: number
+        description: Latitude.
+      lng:
+        type: number
+        description: Longitude.
   MyProfile:
     type: object
     description: Authorized user information.
