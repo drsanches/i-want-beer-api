@@ -116,6 +116,20 @@ types:
               type: object
               properties:
                 key: Token
+        400:
+          description: If some input data is incorrect.
+          body:
+            application/json:
+              type: object
+              examples:
+                No username:
+                  non_field_errors: ['Must include "username" and "password".']
+                No password:
+                  password: ['This field is required.']
+                Wrong password:
+                  non_field_errors: ['Unable to log in with provided credentials.']
+                Nonexistent username:
+                  non_field_errors: ['Unable to log in with provided credentials.']
   /password/change:
     put:
       description: \[NOT IMPLEMENTED\] Changes user password.
