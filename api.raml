@@ -20,11 +20,9 @@ types:
   Email:
     type: string
     description: Email tied to user account.
-  Photo:
-    description: User profile photo URLs.
-    properties:
-      big: string
-      small: string
+  Image:
+    type: string
+    description: User profile image URL.
   Status:
     type: string
     enum: [NONE, WANT BEER, DRINK BEER, DRUNK]
@@ -49,7 +47,7 @@ types:
       lastname: Lastname
       email: Email
       status: Status
-      photo: Photo
+      image: Image
   FriendProfile:
     type: object
     description: Friend user information.
@@ -58,7 +56,7 @@ types:
       firstname: Firstname
       lastname: Lastname
       status: Status
-      photo: Photo
+      image: Image
       location: Location
   OtherProfile:
     type: object
@@ -67,7 +65,7 @@ types:
       username: Username
       firstname: Firstname
       lastname: Lastname
-      photo: Photo
+      image: Image
 
 /rest-auth:
   /registration:
@@ -231,9 +229,9 @@ types:
           firstname?: Firstname
           lastname?: Lastname
           email?: Email
-          photo?:
+          image?:
             type: file
-            description: New user profile photo.
+            description: New user profile image.
     responses:
       200:
   /{friend-username}:
