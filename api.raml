@@ -22,7 +22,7 @@ types:
     description: Email tied to user account.
   Image:
     type: string
-    description: User profile image URL.
+    description: User profile image URL or None.
   Status:
     type: string
     enum: [NONE, WANT BEER, DRINK BEER, DRUNK]
@@ -43,8 +43,8 @@ types:
     description: Authorized user information.
     properties:
       username: Username
-      firstname: Firstname
-      lastname: Lastname
+      first_name: Firstname
+      last_name: Lastname
       email: Email
       status: Status
       image: Image
@@ -53,8 +53,8 @@ types:
     description: Friend user information.
     properties:
       username: Username
-      firstname: Firstname
-      lastname: Lastname
+      first_name: Firstname
+      last_name: Lastname
       status: Status
       image: Image
       location: Location
@@ -63,8 +63,8 @@ types:
     description: Unknown user information.
     properties:
       username: Username
-      firstname: Firstname
-      lastname: Lastname
+      first_name: Firstname
+      last_name: Lastname
       image: Image
 
 /rest-auth:
@@ -219,6 +219,15 @@ types:
         body:
           application/json:
             type: MyProfile
+      401:
+        body:
+          application/json:
+            type: object
+            examples:
+              Invalid token:
+                detail: "Invalid token."
+              No token:
+                detail: "Authentication credentials were not provided."
   patch:
     description: \[NOT IMPLEMENTED\] Changes the profile information of the authorized user.
     headers:
@@ -226,14 +235,17 @@ types:
     body:
       multipart/form-data:
         properties:
-          firstname?: Firstname
-          lastname?: Lastname
+          first_name?: Firstname
+          last_name?: Lastname
           email?: Email
           image?:
             type: file
             description: New user profile image.
     responses:
       200:
+        body:
+          application/json:
+            type: MyProfile
   /{friend-username}:
     get:
       description: \[NOT IMPLEMENTED\] Returns a user profile information for friend with username = friend-username.
@@ -274,7 +286,7 @@ types:
         200:
 
 /i-want-beer:
-  post:
+  patch:
     description: \[NOT IMPLEMENTED\] Changes authorized user status.
     headers:
       Authorization: Token
