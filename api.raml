@@ -246,6 +246,26 @@ types:
         body:
           application/json:
             type: MyProfile
+      400:
+        body:
+          application/json:
+            type: object
+            examples:
+              Too long first name:
+                first_name: ["Ensure this field has no more than 30 characters."]
+              Invalid email:
+                email: ["Enter a valid email address."]
+              Invalid image:
+                image: ["Upload a valid image. The file you uploaded was either not an image or a corrupted image."]
+      401:
+        body:
+          application/json:
+            type: object
+            examples:
+              Invalid token:
+                detail: "Invalid token."
+              No token:
+                detail: "Authentication credentials were not provided."
   /{friend-username}:
     get:
       description: \[NOT IMPLEMENTED\] Returns a user profile information for friend with username = friend-username.
