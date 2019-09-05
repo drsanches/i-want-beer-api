@@ -25,7 +25,7 @@ types:
     description: User profile image URL or None.
   Status:
     type: string
-    enum: [NONE, WANT BEER, DRINK BEER, DRUNK]
+    enum: [NONE, WANT BEER]
     description: User status.
   Location:
     type: object
@@ -38,6 +38,9 @@ types:
       lng:
         type: number
         description: Longitude.
+  Cooldown:
+    type: integer
+    description: Hours 1 to 12 (4 by default). Time after which user status is reset.
   MyProfile:
     type: object
     description: Authorized user information.
@@ -48,6 +51,7 @@ types:
       email: Email
       status: Status
       image: Image
+      cooldown: Cooldown
   FriendProfile:
     type: object
     description: Friend user information.
@@ -241,6 +245,7 @@ types:
           image?:
             type: file
             description: New user profile image.
+          cooldown?: Cooldown
     responses:
       200:
         body:
@@ -276,12 +281,6 @@ types:
           body:
             application/json:
               type: FriendProfile
-    delete:
-      description: \[NOT IMPLEMENTED\] Removes friend with username = friend-username from friend list.
-      headers:
-        Authorization: Token
-      responses:
-        200:
   /{other-username}:
     get:
       description: \[NOT IMPLEMENTED\] Returns a user profile information for unknown user with username = other-username.
@@ -292,18 +291,6 @@ types:
           body:
             application/json:
               type: OtherProfile
-    post:
-      description: \[NOT IMPLEMENTED\] Sends or acсepts new friend request to a user with username = other-username.
-      headers:
-        Authorization: Token
-      responses:
-        200:
-    delete:
-        description: \[NOT IMPLEMENTED\] Declines friend request from / to a user with username = other-username.
-      headers:
-        Authorization: Token
-      responses:
-        200:
 
 /i-want-beer:
   patch:
@@ -354,12 +341,36 @@ types:
             application/json:
               type: OtherProfile[]
   /requests:
-    get:
-      description: \[NOT IMPLEMENTED\] Returns a list of profile information of users who sent a friend request to the authorized user.
-      headers:
-        Authorization: Token
-      responses:
-        200:
-          body:
-            application/json:
-              type: OtherProfile[]
+    /incoming:
+      get:
+        description: \[NOT IMPLEMENTED\] Returns a list of profile information of users who sent a friend request to the authorized user.
+        headers:
+          Authorization: Token
+        responses:
+          200:
+            body:
+              application/json:
+                type: OtherProfile[]
+    /outgoing:
+      get:
+        description: \[NOT IMPLEMENTED\] Returns a list of profile information of users to whom the authorized user sent friend request.
+        headers:
+          Authorization: Token
+        responses:
+          200:
+            body:
+              application/json:
+                type: OtherProfile[]
+    /{username}:
+      post:
+        description: \[NOT IMPLEMENTED\] Sends or acсepts new friend request to a user with given username.
+        headers:
+          Authorization: Token
+        responses:
+          200:
+      delete:
+          description: \[NOT IMPLEMENTED\] Declines friend request or deletes a user with given username from friend list.
+        headers:
+          Authorization: Token
+        responses:
+          200:
